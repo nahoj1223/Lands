@@ -4,10 +4,12 @@
     using System;
     using System.Windows.Input;
     using Xamarin.Forms;
+    using Views;
 
     public class LoginViewModel : BaseViewModel
     {
         #region Atributos
+        private string email;
         private string password;
         private bool isRunning;
         private bool isEnabled;
@@ -16,8 +18,8 @@
         #region Propiedades
         public string Email
         {
-            get;
-            set;
+            get { return this.email; }                //ESTAS DOS SON PARA REFRESCAR EL CONTROL, PERO PRIMERO SE NOMBRAN EN ATRIBUTOS
+            set { SetValue(ref this.email, value); }
         }
 
         public string Password
@@ -92,11 +94,11 @@
             this.IsRunning = false;
             this.IsEnabled = true;
 
-            await Application.Current.MainPage.DisplayAlert(
-                "Ok", //TITULO DEL MENSAJE
-                "Sesion Iniciada",  // MENSAJE
-                "Accept");  //TIPO DE BOTON
-            return;
+            this.Email = string.Empty;
+            this.Password = string.Empty;
+
+            MainViewModel.GetInstance().Lands = new LandsViewModel();
+            await Application.Current.MainPage.Navigation.PushAsync(new LandsPage());
 
         }
         #endregion
